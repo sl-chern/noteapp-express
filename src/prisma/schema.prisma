@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Note {
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(100)
+  content   String    @db.Text
+  created   DateTime  @db.DateTime()
+  category  String    @db.VarChar(100)
+}

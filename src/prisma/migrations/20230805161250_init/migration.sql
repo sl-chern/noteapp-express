@@ -1,0 +1,26 @@
+BEGIN TRY
+
+BEGIN TRAN;
+
+-- CreateTable
+CREATE TABLE [dbo].[Note] (
+    [id] INT NOT NULL IDENTITY(1,1),
+    [name] VARCHAR(100) NOT NULL,
+    [content] TEXT NOT NULL,
+    [created] DATETIME NOT NULL,
+    [category] VARCHAR(100) NOT NULL,
+    CONSTRAINT [Note_pkey] PRIMARY KEY CLUSTERED ([id])
+);
+
+COMMIT TRAN;
+
+END TRY
+BEGIN CATCH
+
+IF @@TRANCOUNT > 0
+BEGIN
+    ROLLBACK TRAN;
+END;
+THROW
+
+END CATCH
