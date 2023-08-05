@@ -2,9 +2,11 @@ import { Prisma } from ".prisma/client"
 import INote from "../types/INote.js"
 import INoteBody from "../types/INoteBody.js"
 import INotesRepository from "../types/INoteRepository.js"
+import INoteBodyOptional from "../types/INoteBodyOptional.js"
+import { DataToUpdate } from "../types/DataToUpdate.js"
 
 const makeNotesDb = (notes: Prisma.NoteDelegate): INotesRepository => {
-  const findOne = async (id: number): Promise<INote> => {
+  const findNote = async (id: number): Promise<INote> => {
     const note: INote = await notes.findFirst({
       where: {
         id
@@ -20,15 +22,34 @@ const makeNotesDb = (notes: Prisma.NoteDelegate): INotesRepository => {
       }
     })
   }
-  const getAll = async (): Promise<Array<INote>> => {
+  const getAllNotes = async (): Promise<Array<INote>> => {
     const allNotes: Array<INote> = await notes.findMany()
     return allNotes
   }
+  const removeNote = async (id: number): Promise<void> => {
+    await notes.delete({
+      where: {
+        id
+      }
+    })
+  }
+  const updateNote = async (data: DataToUpdate): Promise<void> => {
+    await notes.update({
+      data: { 
+        ...data.note
+      },
+      where: {
+        id: data.id
+      }
+    })
+  }
 
   return Object.freeze<INotesRepository>({
-    findOne,
+    findNote,
     createNote,
-    getAll
+    getAllNotes,
+    removeNote,
+    updateNote
   })
 }
 

@@ -9,8 +9,8 @@ router.route('/')
   .post(await middlewares.validate(notesSchemas.createNoteSchema), notesService.createNote)
   .get(notesService.getAllNotes)
 router.route('/:id')
-  .get(await middlewares.validate(notesSchemas.findNoteSchema), notesService.findNote)
-  .delete()
-  .patch()
+  .get(await middlewares.validate(notesSchemas.checkNoteIdSchema), notesService.findNote)
+  .delete(await middlewares.validate(notesSchemas.checkNoteIdSchema), notesService.removeNote)
+  .patch(await middlewares.validate(notesSchemas.updateNoteSchema), notesService.updateNote)
 
 export default router
