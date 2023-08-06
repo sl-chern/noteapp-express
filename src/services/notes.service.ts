@@ -88,11 +88,11 @@ const getNotesStats = async (req: Request, res: Response): Promise<void> => {
     const result = {}
     categories.forEach((category: string): void => {
       result[category] = {
-        archived: archivedStats.find(archivedCategory => archivedCategory.category === category)._count,
-        notArchived: notArchivedStats.find(archivedCategory => archivedCategory.category === category)._count
+        archived: archivedStats.find(archivedCategory => archivedCategory.category === category)?._count || 0,
+        notArchived: notArchivedStats.find(archivedCategory => archivedCategory.category === category)?._count || 0
       }
     })
-    
+
     res.status(200).json(result)
   }
   catch(err) {
