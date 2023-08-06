@@ -1,5 +1,6 @@
 ## To set up and run project:
-1. Install packages
+1. Create .env file in the root of the project with DATABASE_URL, SHADOW_DATABASE_URL, PORT variables
+2. Install packages
    - `npm install`
-2. Runs the app in the development mode.
+3. Runs the app in the development mode.
    - `npm run dev`
