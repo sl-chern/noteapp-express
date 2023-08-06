@@ -14,4 +14,5 @@ model Note {
   content   String    @db.Text
   created   DateTime  @db.DateTime()
   category  String    @db.VarChar(100)
+  archived  Boolean   @default(false)
 }

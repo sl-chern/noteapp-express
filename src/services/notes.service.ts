@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from "express"
-import makeNotesDb from "../repositories/notes.repository.js"
+import { Request, Response } from "express"
+import getNotesRepository from "../repositories/notes.repository.js"
 import { PrismaClient } from "@prisma/client"
 import INote from "../types/INote.js"
 
@@ -7,7 +7,7 @@ const prisma = new PrismaClient({
   log: ["query"]
 })
 
-const notesRepository = makeNotesDb(prisma.note)
+const notesRepository = getNotesRepository(prisma.note)
 
 const findNote = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -52,7 +52,7 @@ const removeNote = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params
     await notesRepository.removeNote(+id)
-    res.status(204)
+    res.status(204).json()
   }
   catch(err) {
     console.log(err)

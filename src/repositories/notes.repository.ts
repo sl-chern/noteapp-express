@@ -2,10 +2,9 @@ import { Prisma } from ".prisma/client"
 import INote from "../types/INote.js"
 import INoteBody from "../types/INoteBody.js"
 import INotesRepository from "../types/INoteRepository.js"
-import INoteBodyOptional from "../types/INoteBodyOptional.js"
 import { DataToUpdate } from "../types/DataToUpdate.js"
 
-const makeNotesDb = (notes: Prisma.NoteDelegate): INotesRepository => {
+const getNotesRepository = (notes: Prisma.NoteDelegate): INotesRepository => {
   const findNote = async (id: number): Promise<INote> => {
     const note: INote = await notes.findFirst({
       where: {
@@ -53,4 +52,4 @@ const makeNotesDb = (notes: Prisma.NoteDelegate): INotesRepository => {
   })
 }
 
-export default makeNotesDb
+export default getNotesRepository
