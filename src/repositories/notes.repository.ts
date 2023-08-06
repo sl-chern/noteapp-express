@@ -3,6 +3,7 @@ import INote from "../types/INote.js"
 import INoteBody from "../types/INoteBody.js"
 import INotesRepository from "../types/INoteRepository.js"
 import { DataToUpdate } from "../types/DataToUpdate.js"
+import { GroupedCategory } from "../types/GroupedCategory.js"
 
 const getNotesRepository = (notes: Prisma.NoteDelegate): INotesRepository => {
   const findNote = async (id: number): Promise<INote> => {
@@ -42,13 +43,24 @@ const getNotesRepository = (notes: Prisma.NoteDelegate): INotesRepository => {
       }
     })
   }
+  const getNotesCount = async (archived: boolean): Promise<Array<GroupedCategory>> => {
+    const stats = await notes.groupBy({
+      by: ["category"],
+      where: {
+        archived
+      },
+      _count: true
+    })
+    return stats
+  }
 
   return Object.freeze<INotesRepository>({
     findNote,
     createNote,
     getAllNotes,
     removeNote,
-    updateNote
+    updateNote,
+    getNotesCount
   })
 }
 

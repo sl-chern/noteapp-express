@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import getNotesRepository from "../repositories/notes.repository.js"
 import { PrismaClient } from "@prisma/client"
 import INote from "../types/INote.js"
+import categories from "../data/categories.js"
 
 const prisma = new PrismaClient({
   log: ["query"]
@@ -79,12 +80,34 @@ const updateNote = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
+const getNotesStats = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const archivedStats = await notesRepository.getNotesCount(true)
+    const notArchivedStats = await notesRepository.getNotesCount(false)
+
+    const result = {}
+    categories.forEach((category: string): void => {
+      result[category] = {
+        archived: archivedStats.find(archivedCategory => archivedCategory.category === category)._count,
+        notArchived: notArchivedStats.find(archivedCategory => archivedCategory.category === category)._count
+      }
+    })
+    
+    res.status(200).json(result)
+  }
+  catch(err) {
+    console.log(err)
+    res.status(500).json({message: "Something went wrong"})
+  }
+}
+
 const notesService = Object.freeze({
   findNote,
   createNote,
   getAllNotes,
   removeNote,
-  updateNote
+  updateNote,
+  getNotesStats
 })
 
 export default notesService

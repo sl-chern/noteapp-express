@@ -1,4 +1,5 @@
 import { DataToUpdate } from "./DataToUpdate.js"
+import { GroupedCategory } from "./GroupedCategory.js"
 import INote from "./INote.js"
 import INoteBody from "./INoteBody.js"
 
@@ -7,5 +8,6 @@ export default interface INotesRepository {
   createNote: (note: INoteBody) => Promise<void>,
   getAllNotes: () => Promise<Array<INote>>,
   removeNote: (id: number) => Promise<void>,
-  updateNote: (data: DataToUpdate) => Promise<void>
+  updateNote: (data: DataToUpdate) => Promise<void>,
+  getNotesCount: (archived: boolean) => Promise<Array<GroupedCategory>>
 }

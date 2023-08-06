@@ -11,7 +11,7 @@ const validate = async (schema: Schema) => {
       if(haveUnknownFields(schema, body))
         return res.status(400).json({message: "Body has unknown fields"})
 
-      await schema.validate({body, params})
+      await schema.validate({body, params}, {strict: true})
       return next()
     }
     catch(error) {
